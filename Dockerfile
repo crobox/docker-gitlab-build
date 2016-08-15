@@ -46,7 +46,7 @@ RUN apt-add-repository ppa:chris-lea/node.js \
 	&& apt-add-repository ppa:brightbox/ruby-ng \
 	&& apt-get update \
     && apt-get upgrade -y \
-	&& apt-get install -y nodejs ruby2.1 ruby2.1-dev ruby ruby-switch unzip \
+	&& apt-get install -y nodejs ruby2.1 ruby2.1-dev ruby ruby-switch unzip libsnappy-java \
 	iptables lxc fontconfig libffi-dev build-essential git python-dev libssl-dev python-pip \
 	&& rm -rf /var/lib/apt/lists/*
 
