@@ -1,7 +1,5 @@
 FROM ubuntu:14.04
 
-#ENV JENKINS_HOME /var/jenkins_home
-
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
 		lxc iptables aufs-tools ca-certificates curl wget software-properties-common language-pack-en \
@@ -33,11 +31,11 @@ RUN echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-s
   	&& update-ca-certificates
 
 # Install docker
-RUN wget -O /usr/local/bin/docker https://get.docker.com/builds/Linux/x86_64/docker-1.9.1 && chmod +x /usr/local/bin/docker
+RUN wget -O /usr/local/bin/docker https://get.docker.com/builds/Linux/x86_64/docker-1.10.1 && chmod +x /usr/local/bin/docker
 
-RUN groupadd docker && adduser --disabled-password --gecos "" jenkins \
+RUN groupadd docker && adduser --disabled-password --gecos "" gitlab \
 	&& sed -i -e "s/%sudo.*$/%sudo ALL=(ALL:ALL) NOPASSWD:ALL/" /etc/sudoers \
-	&& usermod -a -G docker,sudo jenkins
+	&& usermod -a -G docker,sudo gitlab
 
 # Install jq (from github, repo contains ancient version)
 RUN curl -o /usr/local/bin/jq -SL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \
@@ -57,13 +55,3 @@ RUN pip install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-
 RUN ruby-switch --set ruby2.1
 RUN npm install -g bower grunt-cli
 RUN gem install rake bundler compass --no-ri --no-rdoc
-
-# Install the magic wrapper.
-ADD wrapdocker	 /usr/local/bin/wrapdocker
-
-# ADD docker-entrypoint.sh /docker-entrypoint.sh
-
-# ENTRYPOINT ["/docker-entrypoint.sh"]
-
-VOLUME /var/lib/docker
-# VOLUME /var/jenkins_home
