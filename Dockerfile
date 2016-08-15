@@ -37,6 +37,16 @@ RUN groupadd docker && adduser --disabled-password --gecos "" gitlab \
 	&& sed -i -e "s/%sudo.*$/%sudo ALL=(ALL:ALL) NOPASSWD:ALL/" /etc/sudoers \
 	&& usermod -a -G docker,sudo gitlab
 
+# Install maven
+ENV MAVEN_VERSION 3.3.9
+
+RUN mkdir -p /usr/share/maven \
+  && curl -fsSL http://apache.osuosl.org/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz \
+    | tar -xzC /usr/share/maven --strip-components=1 \
+  && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
+
+ENV MAVEN_HOME /usr/share/maven
+
 # Install jq (from github, repo contains ancient version)
 RUN curl -o /usr/local/bin/jq -SL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \
 	&& chmod +x /usr/local/bin/jq
