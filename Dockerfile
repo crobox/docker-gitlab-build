@@ -51,13 +51,16 @@ ENV MAVEN_HOME /usr/share/maven
 RUN curl -o /usr/local/bin/jq -SL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \
 	&& chmod +x /usr/local/bin/jq
 
-# Install ruby and node.js build repositories
-RUN apt-add-repository ppa:chris-lea/node.js \
+# Install sbt ruby and node.js build repositories
+RUN echo "deb http://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list \
+	&& apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823 \
+	&& apt-add-repository ppa:chris-lea/node.js \
 	&& apt-add-repository ppa:brightbox/ruby-ng \
-	&& apt-get update \
-    && apt-get upgrade -y \
+	&& apt-get update -u \
+	&& apt-get upgrade -y \
 	&& apt-get install -y nodejs ruby2.1 ruby2.1-dev ruby ruby-switch unzip libsnappy-java \
 	iptables lxc fontconfig libffi-dev build-essential git python-dev libssl-dev python-pip \
+	sbt \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Install httpie (with SNI), awscli, docker-compose
