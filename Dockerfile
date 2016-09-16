@@ -5,6 +5,13 @@ RUN apt-get update \
 		lxc iptables aufs-tools ca-certificates curl wget software-properties-common language-pack-en \
 	&& rm -rf /var/lib/apt/lists/*
 
+ENV MAVEN_VERSION 3.3.9
+ENV MAVEN_HOME /usr/share/maven
+
+ENV DOCKER_BUCKET get.docker.com
+ENV DOCKER_VERSION 1.12.1
+ENV DOCKER_SHA256 05ceec7fd937e1416e5dce12b0b6e1c655907d349d52574319a1e875077ccb79
+
 # Fix locale.
 ENV LANG en_US.UTF-8
 ENV LC_CTYPE en_US.UTF-8
@@ -31,21 +38,24 @@ RUN echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-s
   	&& update-ca-certificates
 
 # Install docker
-RUN wget -O /usr/local/bin/docker https://get.docker.com/builds/Linux/x86_64/docker-1.10.1 && chmod +x /usr/local/bin/docker
+RUN set -x \
+	&& curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
+	&& echo "${DOCKER_SHA256} *docker.tgz" | sha256sum -c - \
+	&& tar -xzvf docker.tgz \
+	&& mv docker/* /usr/local/bin/ \
+	&& rmdir docker \
+	&& rm docker.tgz \
+	&& docker -v
 
 RUN groupadd docker && adduser --disabled-password --gecos "" gitlab \
 	&& sed -i -e "s/%sudo.*$/%sudo ALL=(ALL:ALL) NOPASSWD:ALL/" /etc/sudoers \
 	&& usermod -a -G docker,sudo gitlab
 
 # Install maven
-ENV MAVEN_VERSION 3.3.9
-
 RUN mkdir -p /usr/share/maven \
   && curl -fsSL http://apache.osuosl.org/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz \
     | tar -xzC /usr/share/maven --strip-components=1 \
   && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
-
-ENV MAVEN_HOME /usr/share/maven
 
 # Install jq (from github, repo contains ancient version)
 RUN curl -o /usr/local/bin/jq -SL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \
@@ -64,7 +74,7 @@ RUN echo "deb http://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list
 	&& rm -rf /var/lib/apt/lists/*
 
 # Install httpie (with SNI), awscli, docker-compose
-RUN pip install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose==1.5.1
+RUN pip install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose
 RUN ruby-switch --set ruby2.1
 RUN npm install -g bower grunt-cli
 RUN gem install rake bundler compass --no-ri --no-rdoc
