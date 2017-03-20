@@ -3,7 +3,8 @@ FROM ubuntu:14.04
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
 		xz-utils lxc iptables aufs-tools ca-certificates curl wget unzip software-properties-common \
-		language-pack-en fontconfig libffi-dev build-essential git ssh python-dev libssl-dev python-pip \
+		language-pack-en fontconfig libffi-dev build-essential git ssh libssl-dev \
+		python-dev python-pip python-setuptools \
 		gettext \
 	&& rm -rf /var/lib/apt/lists/*
 
@@ -101,7 +102,8 @@ RUN echo "deb http://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list
 	&& rm -rf /var/lib/apt/lists/*
 
 # Install httpie (with SNI), awscli, docker-compose
-RUN pip install --upgrade pyparsing pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose
+RUN pip install --upgrade pip setuptools
+RUN pip install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose
 RUN ruby-switch --set ruby2.3
 RUN npm install -g bower grunt-cli
 RUN gem install rake bundler sass:3.4.22 compass --no-ri --no-rdoc
