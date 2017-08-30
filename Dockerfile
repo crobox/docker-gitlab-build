@@ -3,8 +3,9 @@ FROM ubuntu:14.04
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
 		xz-utils lxc iptables aufs-tools ca-certificates curl wget unzip software-properties-common \
-		language-pack-en fontconfig libffi-dev build-essential git python-dev libssl-dev python-pip \
-		gettext \
+		language-pack-en fontconfig libffi-dev build-essential git ssh libssl-dev \
+		python-dev python-pip python-setuptools \
+		gettext dos2unix \
 	&& rm -rf /var/lib/apt/lists/*
 
 ENV MAVEN_VERSION 3.3.9
@@ -107,6 +108,7 @@ ADD scripts /root/scripts/
 RUN chmod -R +x ~/scripts
 
 # Install httpie (with SNI), awscli, docker-compose
+RUN pip install --upgrade pip setuptools
 RUN pip install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose
 RUN ruby-switch --set ruby2.3
 RUN npm install -g bower grunt-cli
