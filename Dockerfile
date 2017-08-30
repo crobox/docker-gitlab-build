@@ -100,6 +100,12 @@ RUN echo "deb http://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list
 	  ruby2.3 ruby2.3-dev ruby ruby-switch libsnappy-java sbt \
 	&& rm -rf /var/lib/apt/lists/*
 
+# Setup the build environment with credentials
+# Pass these in as "secret variables" on gitlab group or repository level
+ADD scripts /root/scripts/
+
+RUN chmod -R +x ~/scripts
+
 # Install httpie (with SNI), awscli, docker-compose
 RUN pip install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose
 RUN ruby-switch --set ruby2.3
