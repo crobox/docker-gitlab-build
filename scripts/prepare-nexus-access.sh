@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-: "${SSH_SERVER_HOSTKEYS:?Missing required NEXUS_HOST variable}"
+: "${NEXUS_HOST:?Missing required NEXUS_HOST variable}"
 
 mkdir -p ~/.sbt/0.13/plugins
 
