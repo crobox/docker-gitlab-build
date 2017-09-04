@@ -103,9 +103,7 @@ RUN echo "deb http://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list
 
 # Setup the build environment with credentials
 # Pass these in as "secret variables" on gitlab group or repository level
-ADD scripts /root/scripts/
-
-RUN chmod -R +x ~/scripts
+ADD scripts /scripts/
 
 # Install httpie (with SNI), awscli, docker-compose
 RUN pip install --upgrade pip setuptools
