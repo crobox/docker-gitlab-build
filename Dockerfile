@@ -3,7 +3,7 @@ FROM ubuntu:14.04
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
 		xz-utils lxc iptables aufs-tools ca-certificates curl wget unzip software-properties-common \
-		language-pack-en fontconfig libffi-dev build-essential git ssh libssl-dev \
+		language-pack-en fontconfig libffi-dev build-essential git apt-transport-https ssh libssl-dev \
 		python-dev python-pip python-setuptools \
 		gettext dos2unix \
 	&& rm -rf /var/lib/apt/lists/*
