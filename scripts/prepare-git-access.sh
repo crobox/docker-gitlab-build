@@ -13,5 +13,5 @@ echo "${SSH_SERVER_HOSTKEYS}" > ~/.ssh/known_hosts
 
 # Setup git access
 git config --global user.email "${GITLAB_USER_EMAIL}"
-git config --global user.name "Runner ${CI_RUNNER_DESCRIPTION}"
+git config --global user.name "${GITLAB_USER_NAME} (${CI_RUNNER_DESCRIPTION})"
 git remote set-url --push origin $(echo "${CI_REPOSITORY_URL}" | perl -pe 's#.*@(.+?(\:\d+)?)/#git@\1:#')
