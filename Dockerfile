@@ -106,6 +106,8 @@ RUN echo "deb https://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.lis
 ADD scripts /scripts/
 
 # Install httpie (with SNI), awscli, docker-compose
+RUN sbt -batch clean # Make sure local deps are cached
+RUN sbt -Dsbt.version=0.13.16 -batch clean # Make sure some deps are cached
 RUN pip install --upgrade pip setuptools
 RUN pip install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose
 RUN ruby-switch --set ruby2.3
