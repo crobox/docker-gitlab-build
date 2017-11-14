@@ -14,7 +14,7 @@ ENV MAVEN_HOME /usr/share/maven
 ENV DOCKER_BUCKET get.docker.com
 ENV DOCKER_VERSION 1.12.1
 ENV DOCKER_SHA256 05ceec7fd937e1416e5dce12b0b6e1c655907d349d52574319a1e875077ccb79
-
+ENV SONAR_SCANNER_VERSION 3.0.3.778
 # Fix locale.
 ENV LANG en_US.UTF-8
 ENV LC_CTYPE en_US.UTF-8
@@ -100,7 +100,11 @@ RUN echo "deb https://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.lis
 	&& apt-get install -y \
 	  ruby2.3 ruby2.3-dev ruby ruby-switch libsnappy-java sbt \
 	&& rm -rf /var/lib/apt/lists/*
-
+# Install sonar-scanner
+RUN curl -SLO "https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}-linux.zip" \
+	&& unzip sonar-scanner-cli-${SONAR_SCANNER_VERSION}-linux.zip -d /usr/share/sonar-scanner/ \
+	&& mv /usr/share/sonar-scanner/sonar-scanner-${SONAR_SCANNER_VERSION}-linux/* /usr/share/sonar-scanner/ \
+	&& ln -s /usr/share/sonar-scanner/bin/sonar-scanner /usr/bin/sonar-scanner
 # Setup the build environment with credentials
 # Pass these in as "secret variables" on gitlab group or repository level
 ADD scripts /scripts/
