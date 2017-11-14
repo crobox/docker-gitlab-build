@@ -5,7 +5,7 @@ RUN apt-get update \
 		xz-utils lxc iptables aufs-tools ca-certificates curl wget unzip software-properties-common \
 		language-pack-en fontconfig libffi-dev build-essential git apt-transport-https ssh libssl-dev \
 		python-dev python-pip python-setuptools \
-		gettext dos2unix \
+		gettext dos2unix bc \
 	&& rm -rf /var/lib/apt/lists/*
 
 ENV MAVEN_VERSION 3.3.9
