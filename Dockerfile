@@ -109,9 +109,9 @@ RUN curl -SLO "https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/so
 # Pass these in as "secret variables" on gitlab group or repository level
 ADD scripts /scripts/
 
-# Install httpie (with SNI), awscli, docker-compose
-RUN sbt -batch clean # Make sure local deps are cached
-RUN sbt -Dsbt.version=0.13.16 -batch clean # Make sure some deps are cached
+# Install httpie (with SNI), awscli, docker-compose, sbt
+RUN sbt -Dsbt.version=1.0.3 -batch clean # Make sure some deps are cached
+RUN sbt -Dsbt.version=1.0.4 -batch clean # Make sure local deps are cached
 RUN pip install --upgrade pip setuptools
 RUN pip install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose
 RUN ruby-switch --set ruby2.3
