@@ -110,14 +110,18 @@ RUN curl -SLO "https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/so
 ADD scripts /scripts/
 
 # Install httpie (with SNI), awscli, docker-compose, sbt
-RUN sbt -Dsbt.version=1.0.3 -batch clean 
-RUN sbt -Dsbt.version=1.0.4 -batch clean 
-RUN sbt -Dsbt.version=1.1.0 -batch clean # Make sure some deps are cached
-RUN pip install --upgrade pip setuptools
-RUN pip install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose
-RUN ruby-switch --set ruby2.3
+RUN sbt -Dsbt.version=1.0.3 -batch clean \
+    && sbt -Dsbt.version=1.0.4 -batch clean \
+    && sbt -Dsbt.version=1.1.0 -batch clean \
+    && sbt -Dsbt.version=1.1.2 -batch clean
+
+RUN pip install --upgrade pip setuptools \
+    && pip install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose
+
 RUN npm install -g bower grunt-cli
-RUN gem install rake bundler sass:3.4.22 compass --no-ri --no-rdoc
+
+RUN ruby-switch --set ruby2.3 \
+   && gem install rake bundler sass:3.4.22 compass --no-ri --no-rdoc
 
 # Initialize environment variables and start the run command or the default one
 ENTRYPOINT ["/scripts/entrypoint.sh"]
