@@ -118,3 +118,8 @@ RUN pip install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-
 RUN ruby-switch --set ruby2.3
 RUN npm install -g bower grunt-cli
 RUN gem install rake bundler sass:3.4.22 compass --no-ri --no-rdoc
+
+# Initialize environment variables and start the run command or the default one
+ENTRYPOINT ["/scripts/entrypoint.sh"]
+# Default command passed to the entrypoint script
+CMD ["/bin/bash"]
