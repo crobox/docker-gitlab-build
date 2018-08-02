@@ -113,7 +113,8 @@ ADD scripts /scripts/
 RUN sbt -Dsbt.version=1.0.3 -batch clean \
     && sbt -Dsbt.version=1.0.4 -batch clean \
     && sbt -Dsbt.version=1.1.0 -batch clean \
-    && sbt -Dsbt.version=1.1.2 -batch clean
+    && sbt -Dsbt.version=1.1.2 -batch clean \
+    && sbt -Dsbt.version=1.2.0 -batch clean
 
 RUN pip install --upgrade pip setuptools \
     && pip install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose
