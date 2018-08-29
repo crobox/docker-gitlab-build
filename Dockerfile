@@ -4,9 +4,21 @@ RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
 		ca-certificates curl wget unzip software-properties-common \
 		language-pack-en fontconfig libffi-dev build-essential git apt-transport-https ssh libssl-dev \
-		python3-dev python3-pip python3-setuptools \
+		python3-dev python3-pip python3-setuptools python-dev python-pip python-setuptools \
 		gettext dos2unix bc gpg dirmngr gpg-agent ruby-full \
 	&& rm -rf /var/lib/apt/lists/*
+
+# Install httpie (with SNI), awscli, docker-compose, sbt
+# Need 2 step since some dependencies require setuptools to be present
+RUN pip3 install --upgrade wheel setuptools \
+    && pip3 install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose
+
+RUN pip install --upgrade wheel setuptools \
+    && pip install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose
+
+
+RUN gem install rake bundler sass:3.4.22 compass --no-ri --no-rdoc
+
 
 ENV MAVEN_VERSION 3.5.4
 ENV MAVEN_HOME /usr/share/maven
@@ -100,13 +112,6 @@ RUN sbt -Dsbt.version=1.0.3 -batch clean \
     && sbt -Dsbt.version=1.1.0 -batch clean \
     && sbt -Dsbt.version=1.1.2 -batch clean \
     && sbt -Dsbt.version=1.2.0 -batch clean
-
-# Install httpie (with SNI), awscli, docker-compose, sbt
-# Need 2 step since some dependencies require setuptools to be present
-RUN pip3 install --upgrade wheel setuptools \
-    && pip3 install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose
-
-RUN gem install rake bundler sass:3.4.22 compass --no-ri --no-rdoc
 
 # Setup the build environment with credentials
 # Pass these in as "secret variables" on gitlab group or repository level
