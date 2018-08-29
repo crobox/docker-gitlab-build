@@ -11,10 +11,8 @@ RUN apt-get update \
 ENV MAVEN_VERSION 3.3.9
 ENV MAVEN_HOME /usr/share/maven
 
-ENV DOCKER_BUCKET get.docker.com
-ENV DOCKER_VERSION 17.05.0-ce
-ENV DOCKER_SHA256 340e0b5a009ba70e1b644136b94d13824db0aeb52e09071410f35a95d94316d9
-ENV SONAR_SCANNER_VERSION 3.0.3.778
+ENV DOCKER_VERSION 18.06.1-ce
+ENV SONAR_SCANNER_VERSION 3.2.0.1227
 # Fix locale.
 ENV LANG en_US.UTF-8
 ENV LC_CTYPE en_US.UTF-8
@@ -42,8 +40,7 @@ RUN echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-s
 
 # Install docker
 RUN set -x \
-	&& curl -fSL "https://${DOCKER_BUCKET}/builds/Linux/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
-	&& echo "${DOCKER_SHA256} *docker.tgz" | sha256sum -c - \
+	&& curl -fSL "https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
 	&& tar -xzvf docker.tgz \
 	&& mv docker/* /usr/local/bin/ \
 	&& rmdir docker \
