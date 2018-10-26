@@ -102,7 +102,7 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs
 
 # Install sonar-scanner
-RUN curl -SLO "https://sonarsource.bintray.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}-linux.zip" \
+RUN curl -SLO "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}-linux.zip" \
 	&& unzip sonar-scanner-cli-${SONAR_SCANNER_VERSION}-linux.zip -d /usr/share/sonar-scanner/ \
 	&& mv /usr/share/sonar-scanner/sonar-scanner-${SONAR_SCANNER_VERSION}-linux/* /usr/share/sonar-scanner/ \
 	&& ln -s /usr/share/sonar-scanner/bin/sonar-scanner /usr/bin/sonar-scanner
