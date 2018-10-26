@@ -111,7 +111,8 @@ RUN sbt -Dsbt.version=1.0.3 -batch clean \
     && sbt -Dsbt.version=1.0.4 -batch clean \
     && sbt -Dsbt.version=1.1.0 -batch clean \
     && sbt -Dsbt.version=1.1.2 -batch clean \
-    && sbt -Dsbt.version=1.2.0 -batch clean
+    && sbt -Dsbt.version=1.2.0 -batch clean \
+    && sbt -Dsbt.version=1.2.6 -batch clean
 
 # Setup the build environment with credentials
 # Pass these in as "secret variables" on gitlab group or repository level
