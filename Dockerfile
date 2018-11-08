@@ -91,7 +91,7 @@ RUN set -ex \
   done
 
 ENV NPM_CONFIG_LOGLEVEL info
-ENV NODE_VERSION 8.11.4
+ENV NODE_VERSION 10.13.0
 
 RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
   && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
@@ -107,12 +107,7 @@ RUN curl -SLO "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/s
 	&& mv /usr/share/sonar-scanner/sonar-scanner-${SONAR_SCANNER_VERSION}-linux/* /usr/share/sonar-scanner/ \
 	&& ln -s /usr/share/sonar-scanner/bin/sonar-scanner /usr/bin/sonar-scanner
 
-RUN sbt -Dsbt.version=1.0.3 -batch clean \
-    && sbt -Dsbt.version=1.0.4 -batch clean \
-    && sbt -Dsbt.version=1.1.0 -batch clean \
-    && sbt -Dsbt.version=1.1.2 -batch clean \
-    && sbt -Dsbt.version=1.2.0 -batch clean \
-    && sbt -Dsbt.version=1.2.6 -batch clean
+RUN sbt -Dsbt.version=1.2.6 -batch clean
 
 # Setup the build environment with credentials
 # Pass these in as "secret variables" on gitlab group or repository level
