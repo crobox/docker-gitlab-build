@@ -5,7 +5,7 @@ RUN apt-get update \
 		ca-certificates curl wget unzip software-properties-common \
 		language-pack-en fontconfig libffi-dev build-essential git apt-transport-https ssh libssl-dev \
 		python3-dev python3-pip python3-setuptools python-dev python-pip python-setuptools \
-		gettext dos2unix bc gpg dirmngr gpg-agent ruby-full \
+		gettext dos2unix bc gpg dirmngr gpg-agent ruby-full patch zlib1g-dev liblzma-dev \
 	&& rm -rf /var/lib/apt/lists/*
 
 # Install httpie (with SNI), awscli, docker-compose, sbt
@@ -17,7 +17,7 @@ RUN pip install --upgrade wheel setuptools \
     && pip install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose
 
 
-RUN gem install rake bundler sass:3.4.22 compass --no-ri --no-rdoc
+RUN gem install rake bundler --no-ri --no-rdoc
 
 
 ENV MAVEN_VERSION 3.5.4
@@ -91,7 +91,7 @@ RUN set -ex \
   done
 
 ENV NPM_CONFIG_LOGLEVEL info
-ENV NODE_VERSION 10.13.0
+ENV NODE_VERSION 10.15.3
 
 RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
   && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt.asc" \
