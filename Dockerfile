@@ -91,7 +91,7 @@ RUN curl -SLO "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/s
 	&& mv /usr/share/sonar-scanner/sonar-scanner-${SONAR_SCANNER_VERSION}-linux/* /usr/share/sonar-scanner/ \
 	&& ln -s /usr/share/sonar-scanner/bin/sonar-scanner /usr/bin/sonar-scanner
 
-RUN sbt -Dsbt.version=1.2.6 -batch clean
+RUN sbt -Dsbt.version=1.2.8 -batch clean
 
 # Setup the build environment with credentials
 # Pass these in as "secret variables" on gitlab group or repository level
