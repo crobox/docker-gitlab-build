@@ -2,7 +2,7 @@ FROM ubuntu:18.04
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
-		ca-certificates curl wget unzip software-properties-common \
+		ca-certificates curl wget unzip software-properties-common openjdk-11-jdk libsnappy-java \
 		language-pack-en fontconfig libffi-dev build-essential git apt-transport-https ssh libssl-dev \
 		python3-dev python3-pip python3-setuptools python-dev python-pip python-setuptools \
 		gettext dos2unix bc gpg dirmngr gpg-agent ruby-full patch zlib1g-dev liblzma-dev \
@@ -16,9 +16,7 @@ RUN pip3 install --upgrade wheel setuptools \
 RUN pip install --upgrade wheel setuptools \
     && pip install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose
 
-
 RUN gem install rake bundler --no-ri --no-rdoc
-
 
 ENV MAVEN_VERSION 3.5.4
 ENV MAVEN_HOME /usr/share/maven
@@ -38,20 +36,13 @@ RUN curl -o /usr/local/bin/gosu -SL "https://github.com/tianon/gosu/releases/dow
 	&& rm /usr/local/bin/gosu.asc \
 	&& chmod +x /usr/local/bin/gosu
 
-# Install java-8-oracle
+# Install sbt
 RUN echo "deb https://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.list.d/sbt.list \
   && apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv 642AC823 \
-  && echo debconf shared/accepted-oracle-license-v1-1 select true | debconf-set-selections \
-	&& echo debconf shared/accepted-oracle-license-v1-1 seen true | debconf-set-selections \
-	&& add-apt-repository -y ppa:webupd8team/java \
-	&& apt-get update \
-  	&& apt-get install -y --no-install-recommends \
-      oracle-java8-installer ca-certificates-java sbt libsnappy-java \
-  	&& rm -rf /var/lib/apt/lists/* /var/cache/oracle-jdk8-installer/*.tar.gz /usr/lib/jvm/java-8-oracle/src.zip /usr/lib/jvm/java-8-oracle/javafx-src.zip \
-      /usr/lib/jvm/java-8-oracle/jre/lib/security/cacerts \
-  	&& ln -s /etc/ssl/certs/java/cacerts /usr/lib/jvm/java-8-oracle/jre/lib/security/cacerts \
-  	&& update-ca-certificates
-
+  	&& apt-get update \
+  	&& apt-get install -y --no-install-recommends sbt \
+  	&& rm -rf /var/lib/apt/lists/*
+	
 # Install docker
 RUN set -x \
 	&& curl -fSL "https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
