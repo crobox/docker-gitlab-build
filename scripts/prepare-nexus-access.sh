@@ -2,10 +2,9 @@
 
 : "${NEXUS_HOST:?Missing required NEXUS_HOST variable}"
 
-mkdir -p ~/.sbt/0.13/plugins
 mkdir -p ~/.sbt/1.0/plugins
 
-tee -a ~/.sbt/0.13/plugins/credentials.sbt ~/.sbt/1.0/plugins/credentials.sbt << EOF
+tee -a ~/.sbt/1.0/plugins/credentials.sbt << EOF
 credentials += Credentials("Sonatype Nexus Repository Manager", "$NEXUS_HOST", System.getenv("NEXUS_USER"), System.getenv("NEXUS_PASS"))
 EOF
 
