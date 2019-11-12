@@ -18,11 +18,6 @@ RUN pip install --upgrade wheel setuptools \
 
 RUN gem install rake bundler --no-ri --no-rdoc
 
-ENV MAVEN_VERSION 3.5.4
-ENV MAVEN_HOME /usr/share/maven
-
-ENV DOCKER_VERSION 18.06.1-ce
-ENV SONAR_SCANNER_VERSION 3.2.0.1227
 # Fix locale.
 ENV LANG en_US.UTF-8
 ENV LC_CTYPE en_US.UTF-8
@@ -44,6 +39,7 @@ RUN echo "deb https://dl.bintray.com/sbt/debian /" | tee -a /etc/apt/sources.lis
   	&& rm -rf /var/lib/apt/lists/*
 	
 # Install docker
+ENV DOCKER_VERSION 18.09.9
 RUN set -x \
 	&& curl -fSL "https://download.docker.com/linux/static/stable/x86_64/docker-${DOCKER_VERSION}.tgz" -o docker.tgz \
 	&& tar -xzvf docker.tgz \
@@ -56,18 +52,20 @@ RUN groupadd docker && adduser --disabled-password --gecos "" gitlab \
 	&& usermod -a -G docker gitlab
 
 # Install maven
+ENV MAVEN_VERSION 3.6.2
+ENV MAVEN_HOME /usr/share/maven
 RUN mkdir -p /usr/share/maven \
   && curl -fsSL https://apache.osuosl.org/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz \
     | tar -xzC /usr/share/maven --strip-components=1 \
   && ln -s /usr/share/maven/bin/mvn /usr/bin/mvn
 
 # Install jq (from github, repo contains ancient version)
-RUN curl -o /usr/local/bin/jq -SL https://github.com/stedolan/jq/releases/download/jq-1.5/jq-linux64 \
+RUN curl -o /usr/local/bin/jq -SL https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 \
 	&& chmod +x /usr/local/bin/jq
 
 # Install nodejs
 ENV NPM_CONFIG_LOGLEVEL info
-ENV NODE_VERSION 10.15.3
+ENV NODE_VERSION 12.13.0
 
 RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-x64.tar.xz" \
   && curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/SHASUMS256.txt" \
@@ -76,13 +74,8 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
   && rm "node-v$NODE_VERSION-linux-x64.tar.xz" SHASUMS256.txt \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs
 
-# Install sonar-scanner
-RUN curl -SLO "https://binaries.sonarsource.com/Distribution/sonar-scanner-cli/sonar-scanner-cli-${SONAR_SCANNER_VERSION}-linux.zip" \
-	&& unzip sonar-scanner-cli-${SONAR_SCANNER_VERSION}-linux.zip -d /usr/share/sonar-scanner/ \
-	&& mv /usr/share/sonar-scanner/sonar-scanner-${SONAR_SCANNER_VERSION}-linux/* /usr/share/sonar-scanner/ \
-	&& ln -s /usr/share/sonar-scanner/bin/sonar-scanner /usr/bin/sonar-scanner
-
 RUN sbt -Dsbt.version=1.2.8 -batch clean
+RUN sbt -Dsbt.version=1.3.3 -batch clean
 
 # Setup the build environment with credentials
 # Pass these in as "secret variables" on gitlab group or repository level
