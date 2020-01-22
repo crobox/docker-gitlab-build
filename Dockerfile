@@ -52,7 +52,7 @@ RUN groupadd docker && adduser --disabled-password --gecos "" gitlab \
 	&& usermod -a -G docker gitlab
 
 # Install maven
-ENV MAVEN_VERSION 3.6.2
+ENV MAVEN_VERSION 3.6.3
 ENV MAVEN_HOME /usr/share/maven
 RUN mkdir -p /usr/share/maven \
   && curl -fsSL https://apache.osuosl.org/maven/maven-3/$MAVEN_VERSION/binaries/apache-maven-$MAVEN_VERSION-bin.tar.gz \
