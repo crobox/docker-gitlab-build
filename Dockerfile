@@ -74,8 +74,13 @@ RUN curl -SLO "https://nodejs.org/dist/v$NODE_VERSION/node-v$NODE_VERSION-linux-
   && rm "node-v$NODE_VERSION-linux-x64.tar.xz" SHASUMS256.txt \
   && ln -s /usr/local/bin/node /usr/local/bin/nodejs
 
+RUN curl -fsSL "https://github.com/GoogleCloudPlatform/docker-credential-gcr/releases/download/v2.0.0/docker-credential-gcr_linux_amd64-2.0.0.tar.gz" \
+    | tar xz --to-stdout ./docker-credential-gcr \
+    > /usr/bin/docker-credential-gcr && chmod +x /usr/bin/docker-credential-gcr
+
 RUN sbt -Dsbt.version=1.2.8 -batch clean
 RUN sbt -Dsbt.version=1.3.3 -batch clean
+RUN sbt -Dsbt.version=1.3.7 -batch clean
 
 # Setup the build environment with credentials
 # Pass these in as "secret variables" on gitlab group or repository level
