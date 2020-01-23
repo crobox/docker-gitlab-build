@@ -8,16 +8,16 @@ RUN apt-get update \
 		gettext dos2unix bc gpg dirmngr gpg-agent ruby-full patch zlib1g-dev liblzma-dev \
 	&& rm -rf /var/lib/apt/lists/*
 
+RUN pip install --upgrade wheel setuptools \
+    && pip install --upgrade pyopenssl pyasn1 ndg-httpsclient awscli docker-compose
+
 # Install httpie (with SNI), awscli, docker-compose, sbt
 # Need 2 step since some dependencies require setuptools to be present
 RUN pip3 install --upgrade wheel setuptools \
     && pip3 install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose
 
-RUN pip install --upgrade wheel setuptools \
-    && pip install --upgrade pyopenssl pyasn1 ndg-httpsclient awscli docker-compose
-
 RUN gem update --system \
-    && gem install rake bundler --no-ri --no-rdoc
+    && gem install rake bundler
 
 # Fix locale.
 ENV LANG en_US.UTF-8
