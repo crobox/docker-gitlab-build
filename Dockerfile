@@ -14,9 +14,10 @@ RUN pip3 install --upgrade wheel setuptools \
     && pip3 install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose
 
 RUN pip install --upgrade wheel setuptools \
-    && pip install --upgrade pyopenssl pyasn1 ndg-httpsclient httpie awscli docker-compose
+    && pip install --upgrade pyopenssl pyasn1 ndg-httpsclient awscli docker-compose
 
-RUN gem install rake bundler --no-ri --no-rdoc
+RUN gem update --system \
+    && gem install rake bundler --no-ri --no-rdoc
 
 # Fix locale.
 ENV LANG en_US.UTF-8
