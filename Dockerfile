@@ -79,9 +79,8 @@ RUN curl -fsSL "https://github.com/GoogleCloudPlatform/docker-credential-gcr/rel
     | tar xz --to-stdout ./docker-credential-gcr \
     > /usr/bin/docker-credential-gcr && chmod +x /usr/bin/docker-credential-gcr
 
-RUN sbt -Dsbt.version=1.2.8 -batch clean
-RUN sbt -Dsbt.version=1.3.3 -batch clean
 RUN sbt -Dsbt.version=1.3.7 -batch clean
+RUN sbt -Dsbt.version=1.3.8 -batch clean
 
 # Setup the build environment with credentials
 # Pass these in as "secret variables" on gitlab group or repository level
