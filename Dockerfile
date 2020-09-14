@@ -1,4 +1,13 @@
-FROM ubuntu:18.04
+#
+# Test your changes locally by:
+# docker build -t test_build .
+#
+
+FROM ubuntu:20.04
+
+# Setup timezone data
+ENV TZ=Europe/Amsterdam
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
