@@ -4,12 +4,13 @@ RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
 		ca-certificates curl wget unzip software-properties-common openjdk-11-jdk libsnappy-java \
 		language-pack-en fontconfig libffi-dev build-essential git apt-transport-https ssh libssl-dev \
-		python3-dev python3-pip python3-setuptools python-dev python-pip python-setuptools \
+		python3-dev python3-pip python3-setuptools python-dev python-setuptools \
 		gettext dos2unix bc gpg dirmngr gpg-agent ruby-full patch zlib1g-dev liblzma-dev \
 	&& rm -rf /var/lib/apt/lists/*
 
-RUN pip install --upgrade wheel setuptools \
-    && pip install --upgrade pyopenssl pyasn1 ndg-httpsclient awscli docker-compose
+# Disabled
+# RUN pip install --upgrade wheel setuptools \
+#    && pip install --upgrade pyopenssl pyasn1 ndg-httpsclient awscli docker-compose
 
 # Install httpie (with SNI), awscli, docker-compose, sbt
 # Need 2 step since some dependencies require setuptools to be present
