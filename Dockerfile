@@ -11,7 +11,7 @@ RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update \
 	&& apt-get install -y --no-install-recommends \
-		ca-certificates curl wget unzip software-properties-common openjdk-11-jdk libsnappy-java \
+		ca-certificates curl wget unzip software-properties-common openjdk-11-jdk libsnappy-java libsnappy-dev \
 		language-pack-en fontconfig libffi-dev build-essential git apt-transport-https ssh libssl-dev \
 		python3-dev python3-pip python3-setuptools python-dev python-setuptools \
 		gettext dos2unix bc gpg dirmngr gpg-agent ruby-full patch zlib1g-dev liblzma-dev \
@@ -73,6 +73,14 @@ RUN mkdir -p /usr/share/maven \
 # Install jq (from github, repo contains ancient version)
 RUN curl -o /usr/local/bin/jq -SL https://github.com/stedolan/jq/releases/download/jq-1.6/jq-linux64 \
 	&& chmod +x /usr/local/bin/jq
+	
+# Install / Download HADOOP (I know......)
+ENV HADOOP_VERSION 3.3.0
+RUN mkdir -p /usr/share/hadoop \
+  && curl -fsSL https://apache.osuosl.org/hadoop/common/hadoop-$HADOOP_VERSION/hadoop-$HADOOP_VERSION.tar.gz \ 
+    | tar -xzC /usr/share/hadoop --strip-components=1 \
+  && ln -s /usr/share/hadoop/bin/hadoop /usr/bin/hadoop
+ENV LD_LIBRARY_PATH /usr/share/hadoop/lib/native	
 
 # Install nodejs
 ENV NPM_CONFIG_LOGLEVEL info
